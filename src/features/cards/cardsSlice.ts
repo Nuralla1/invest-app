@@ -5,19 +5,17 @@ import {
   createEntityAdapter,
 } from "@reduxjs/toolkit";
 
-const cardsAdapter = createEntityAdapter();
-
 type initState = {
-  id?: number[];
   entities?: any;
   status: string;
   symbols: string[];
 };
 
-const initialState = cardsAdapter.getInitialState<initState>({
+const initialState: initState = {
   status: "idle",
   symbols: [],
-});
+  entities: [],
+};
 
 export type companyWithId = {
   [key: string]: string | number;
@@ -35,20 +33,17 @@ const configObj = {
   },
 };
 
-export const fetchSymbols = createAsyncThunk(
-  "cards/fetchCardsSymbols",
-  async () => {
-    const response = await fetch(
-      `${baseApiUrl}/stock/symbol?exchange=US&token=${apiKey}`,
-      configObj
-    );
-    const resJson = await response.json();
-    resJson.splice(10);
-    const symbolsArr = resJson.map((resInfo: companyWithId) => resInfo.symbol);
+export const fetchSymbols = createAsyncThunk("cards/fetchSymbols", async () => {
+  const response = await fetch(
+    `${baseApiUrl}/stock/symbol?exchange=US&token=${apiKey}`,
+    configObj
+  );
+  const resJson = await response.json();
+  resJson.splice(10);
+  const symbolsArr = resJson.map((resInfo: companyWithId) => resInfo.symbol);
 
-    return symbolsArr;
-  }
-);
+  return symbolsArr;
+});
 
 export const fetchCompanyProfiles = createAsyncThunk(
   "cards/fetchCompanyProfiles",
@@ -74,7 +69,7 @@ const cardsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchCompanyProfiles.fulfilled, (state, action) => {
-        cardsAdapter.setAll(state, action.payload);
+        state.entities = action.payload;
         state.status = "idle";
       })
       .addCase(fetchSymbols.fulfilled, (state, action) => {
@@ -83,12 +78,5 @@ const cardsSlice = createSlice({
       });
   },
 });
-
-export const { selectAll: selectCompanies, selectById: selectCompaniesById } =
-  cardsAdapter.getSelectors<any>((state) => state.cards);
-
-export const selectCompanyProfiles = createSelector(selectCompanies, (cards) =>
-  cards.map((card) => card)
-);
 
 export default cardsSlice.reducer;

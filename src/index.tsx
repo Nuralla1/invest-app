@@ -15,11 +15,11 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-store.dispatch(fetchSymbols());
+// store.dispatch(fetchSymbols());
 
-store.dispatch(fetchCompanyProfiles(store.getState().cards.symbols));
+// store.dispatch(fetchCompanyProfiles(store.getState().cards.symbols));
 
-store.getState();
+// store.getState();
 
 root.render(
   <React.StrictMode>

@@ -1,35 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import store from "../../store";
 
 import { useEffect } from "react";
-import {
-  fetchCompanyProfiles,
-  fetchSymbols,
-  selectCompanyProfiles,
-} from "./cardsSlice";
+import { fetchCompanyProfiles, fetchSymbols } from "./cardsSlice";
 import { Card } from "@mui/material";
 
 const Cards = () => {
+  // const [symbolsFetched, setSymbolsFetched] = useState(false);
   const dispatch = useDispatch();
 
-  const symbolsArr = useSelector((state: any) => state.cards.symbols);
-  const companyProfiles: any = useSelector(selectCompanyProfiles);
-  // store.dispatch(fetchSymbols());
+  const symbolsArr = useSelector(
+    (state: any) => state.cards.symbols,
+    shallowEqual
+  );
+  const companyProfiles = useSelector(
+    (state: any) => state.cards.entities,
+    shallowEqual
+  );
 
-  // store.dispatch(fetchCompanyProfiles(store.getState().cards.symbols));
   console.log(companyProfiles);
-  console.log(store.getState());
-
-  useEffect(() => {
-    store.dispatch(fetchCompanyProfiles(symbolsArr));
-  }, [symbolsArr]);
+  // useEffect(() => {
+  //   setTimeout(() => store.dispatch(fetchSymbols()), 0);
+  //   // setSymbolsFetched(true);
+  // }, []);
+  // useEffect(() => {
+  //   setTimeout(() => store.dispatch(fetchCompanyProfiles(symbolsArr)), 0);
+  // }, [symbolsArr]);
 
   return (
     <>
       <div>
         {companyProfiles.map((company: any) => {
-          <span>{company.name}</span>;
+          return <div key={company.ticker}>{company.country}</div>;
         })}
       </div>
     </>
