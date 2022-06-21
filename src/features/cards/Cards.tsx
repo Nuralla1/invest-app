@@ -13,17 +13,17 @@ import { Card } from "@mui/material";
 const Cards = () => {
   const dispatch = useDispatch();
 
-  //   const symbolsArr = useSelector((state: any) => state.cards.symbols);
+  const symbolsArr = useSelector((state: any) => state.cards.symbols);
   const companyProfiles: any = useSelector(selectCompanyProfiles);
-  store.dispatch(fetchSymbols());
+  // store.dispatch(fetchSymbols());
 
-  store.dispatch(fetchCompanyProfiles(store.getState().cards.symbols));
-  // console.log(companyProfiles);
-  // console.log(store.getState());
+  // store.dispatch(fetchCompanyProfiles(store.getState().cards.symbols));
+  console.log(companyProfiles);
+  console.log(store.getState());
 
-  // useEffect(() => {
-  //   store.dispatch(fetchSymbols());
-  // });
+  useEffect(() => {
+    store.dispatch(fetchCompanyProfiles(symbolsArr));
+  }, [symbolsArr]);
 
   return (
     <>
