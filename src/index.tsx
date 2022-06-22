@@ -6,20 +6,10 @@ import reportWebVitals from "./reportWebVitals";
 
 import store from "./store";
 import { Provider } from "react-redux";
-import {
-  fetchSymbols,
-  fetchCompanyProfiles,
-} from "./features/cards/cardsSlice";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-
-// store.dispatch(fetchSymbols());
-
-// store.dispatch(fetchCompanyProfiles(store.getState().cards.symbols));
-
-// store.getState();
 
 root.render(
   <React.StrictMode>

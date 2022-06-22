@@ -3,7 +3,8 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import store from "../../store";
 
 import { useEffect } from "react";
-import { fetchCompanyProfiles, fetchSymbols } from "./cardsSlice";
+import { fetchCompanies } from "./cardsSlice";
+
 import { Card } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -14,23 +15,20 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 
 const Cards = () => {
-  // const [symbolsFetched, setSymbolsFetched] = useState(false);
   const dispatch = useDispatch();
 
-  const symbolsArr = useSelector(
-    (state: any) => state.cards.symbols,
-    shallowEqual
-  );
-  const companyProfiles = useSelector(
+  // const symbolsArr = useSelector(
+  //   (state: any) => state.cards.symbols,
+  //   shallowEqual
+  // );
+  const companiesArr = useSelector(
     (state: any) => state.cards.entities,
     shallowEqual
   );
-
-  console.log(companyProfiles);
-  // useEffect(() => {
-  //   setTimeout(() => store.dispatch(fetchSymbols()), 0);
-  //   // setSymbolsFetched(true);
-  // }, []);
+  console.log(companiesArr);
+  useEffect(() => {
+    setTimeout(() => store.dispatch(fetchCompanies()), 0);
+  }, []);
   // useEffect(() => {
   //   setTimeout(() => store.dispatch(fetchCompanyProfiles(symbolsArr)), 0);
   // }, [symbolsArr]);
@@ -42,8 +40,8 @@ const Cards = () => {
       <Container sx={{ py: 2 }} maxWidth="md">
         {/* End hero unit */}
         <Grid container spacing={4}>
-          {cards.map((card) => (
-            <Grid item key={card} xs={12} sm={6} md={4}>
+          {companiesArr.map((company: any) => (
+            <Grid item key={company.ticker} xs={12} sm={6} md={4}>
               <Card
                 sx={{
                   height: "100%",
@@ -62,7 +60,7 @@ const Cards = () => {
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography gutterBottom variant="h5" component="h2">
-                    Company name
+                    {company.name}
                   </Typography>
                   <Typography>Additional company info</Typography>
                 </CardContent>
