@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -51,6 +53,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header = () => {
+  const navigate = useNavigate();
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -61,8 +64,9 @@ const Header = () => {
             color="inherit"
             aria-label="open drawer"
             sx={{ mr: 2 }}
+            onClick={() => navigate("/")}
           >
-            <MenuIcon />
+            Home
           </IconButton>
           <Typography
             variant="h6"
@@ -72,6 +76,9 @@ const Header = () => {
           >
             GOLDMAN SACHS.KZ VIP ORIGINAL INC.
           </Typography>
+
+          <Button variant="contained">Sign in / Sign up</Button>
+
           <Search>
             <SearchIconWrapper>
               <SearchIcon />

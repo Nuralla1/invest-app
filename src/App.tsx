@@ -1,27 +1,30 @@
 import React from "react";
 import "./App.css";
-import Cards from "./features/cards/Cards";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import { Routes, Route } from "react-router-dom";
 
 import Header from "./features/header/Header";
-import MainDescription from "./features/MainDescription/MainDescription";
 import Footer from "./features/footer/Footer";
+import MainPage from "./features/mainPage/mainPage";
+import Profile from "./Proifle/Profile";
 
 const theme = createTheme();
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <div className="App">
+    <div className="App">
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Header />
-        <MainDescription />
-        <Cards />
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/:companyNumber" element={<Profile />} />
+        </Routes>
         <Footer />
-      </div>
-    </ThemeProvider>
+      </ThemeProvider>
+    </div>
   );
 }
 
