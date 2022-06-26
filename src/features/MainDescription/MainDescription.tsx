@@ -32,12 +32,6 @@ const MainDescription = () => {
           rich. There is a list of companies that you can invest in. Click on
           the cards to get more info.
         </Typography>
-        <Stack
-          sx={{ pt: 4 }}
-          direction="row"
-          spacing={2}
-          justifyContent="center"
-        ></Stack>
       </Container>
     </Box>
   );
