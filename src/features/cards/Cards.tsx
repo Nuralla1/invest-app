@@ -24,6 +24,7 @@ const Cards = () => {
     (state: any) => state.cards.entities,
     shallowEqual
   );
+  console.log(companiesArr);
   const loadingStatus = useSelector((state: any) => state.cards.status);
 
   useEffect(() => {
@@ -35,10 +36,15 @@ const Cards = () => {
 
   return (
     <>
-      <Container sx={{ py: 2 }} maxWidth="md">
+      <Container
+        sx={{
+          py: 2,
+        }}
+        maxWidth="md"
+      >
         <Grid container spacing={4}>
           {companiesArr.map((company: any) => (
-            <Grid item key={company.ticker} xs={12} sm={6} md={4}>
+            <Grid item key={company.symbol} xs={12} sm={6} md={4}>
               <Card
                 sx={{
                   height: "100%",
@@ -53,21 +59,21 @@ const Cards = () => {
                       pt: "0%",
                     }}
                     image={company.img}
-                    alt={`${company.name} IMAGE`}
+                    alt={`${company.shortName} IMAGE`}
                   />
                 </CardContent>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="h2">
-                    {company.name}
+                    {company.shortName}
                   </Typography>
                   <Typography>
-                    Location: {`${company.locale}`.toUpperCase()}
+                    Price: {`${company.postMarketPrice}`} USD
                   </Typography>
                 </CardContent>
                 <CardActions>
                   <Button
                     size="large"
-                    onClick={() => navigate(`/${company.ticker}`)}
+                    onClick={() => navigate(`/${company.symbol}`)}
                   >
                     See more info
                   </Button>

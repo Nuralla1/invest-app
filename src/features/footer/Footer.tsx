@@ -10,7 +10,10 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 
 const Footer = () => {
   return (
-    <Box sx={{ bgcolor: "#background.paper", p: 6 }} component="footer">
+    <Box
+      sx={{ bgcolor: "#background.paper", p: 6, mt: "auto" }}
+      component="footer"
+    >
       <Container maxWidth="md">
         <Grid container spacing={5}>
           <Grid item sm={4}>

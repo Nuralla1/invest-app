@@ -1,25 +1,63 @@
 import {
   createSlice,
-  createSelector,
   createAsyncThunk,
   createEntityAdapter,
 } from "@reduxjs/toolkit";
 
 const companyImages = [
-  "https://www.perlan.com.pl/uploaded/AppBundleEntityProduct/imageKey/234/agilent-logo.png",
-  "https://invest-brands.cdn-tinkoff.ru/US0138721065x640.png",
-  "https://play-lh.googleusercontent.com/D7U1Fj7jprmMz9yr2iC16lSRQjt21-DQlShBxjckQd_H_VMGCpCMD2MXour0EMumKZ0",
-  "https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco,dpr_1/v1494318041/n9qutns2m5obbaqle92g.jpg",
-  "https://s3-symbol-logo.tradingview.com/aareal-bank-ag-inhaber-aktien-o-n--600.png",
-  "https://www.devenir-rentier.fr/img/logos/xetra/arl.png",
-  "https://www.marketbeat.com/logos/goldman-sachs-physical-gold-etf-logo.png?v=20220131080812",
-  "https://assets.entrepreneur.com/content/1x1/300/1624390961-logo-ASIA-inc.jpg",
-  "https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/v1480061320/dnmdnooebhqirhyt2d9u.png",
-  "https://www.renaissancecapital.com/logos/AAC.U_logo_fb.jpg",
+  {
+    ticker: "AAPL",
+    logo: "https://s3-symbol-logo.tradingview.com/apple--600.png",
+  },
+  {
+    ticker: "TSLA",
+    logo: "https://i.pinimg.com/736x/ff/c0/f3/ffc0f3182c18ec063380a32c89a95c3e.jpg",
+  },
+  {
+    ticker: "AMZN",
+    logo: "https://www.amanida.com/wp-content/uploads/2018/04/amazon-logo-a-smile-black.png",
+  },
+  {
+    ticker: "META",
+    logo: "https://static.vecteezy.com/system/resources/previews/004/263/114/original/meta-logo-meta-by-facebook-icon-editorial-logo-for-social-media-free-vector.jpg",
+  },
+  {
+    ticker: "GOOG",
+    logo: "https://thumbs.dreamstime.com/b/new-google-logo-vector-illustration-white-background-editorial-149046989.jpg",
+  },
+  {
+    ticker: "NFLX",
+    logo: "https://i.pinimg.com/originals/f6/97/4e/f6974e017d3f6196c4cbe284ee3eaf4e.png",
+  },
+  {
+    ticker: "GME",
+    logo: "https://ih1.redbubble.net/image.2128328118.9499/st,small,507x507-pad,600x600,f8f8f8.jpg",
+  },
+  {
+    ticker: "SNDL",
+    logo: "https://www.pngitem.com/pimgs/m/459-4598262_sundial-growers-logo-hd-png-download.png",
+  },
+  {
+    ticker: "BB",
+    logo: "https://yablyk.com/wp-content/uploads/2013/02/blackberry-logo.jpg",
+  },
+];
+
+const symbolsYahoo = [
+  "AAPL",
+  "TSLA",
+  "AMZN",
+  "META",
+  "GOOG",
+  "NFLX",
+  "GME",
+  "SNDL",
+  "BB",
 ];
 
 type initState = {
   entities?: any;
+  currentCompanyInfo: any;
   status: string;
   symbols: string[];
 };
@@ -28,6 +66,7 @@ const initialState: initState = {
   status: "idle",
   symbols: [],
   entities: [],
+  currentCompanyInfo: {},
 };
 
 export type companyWithId = {
@@ -37,57 +76,55 @@ export type companyWithId = {
   shareOutstanding: number;
 };
 
-const apiKey = "RpN5ZqpEnkRKM9zD0NCflTb06R0lZfFV";
-const baseUrl = "https://api.polygon.io";
-const configObj = {
-  method: "GET",
-  headers: {
-    Accept: "application/json",
-  },
-};
-
-// FINNHUB FETCH REQUEST FOR SYMBOLS AND PROFILES, BUT THEY COME ALWAYS IN RANDOM ORDER
-// export const fetchSymbols = createAsyncThunk("cards/fetchSymbols", async () => {
-//   const response = await fetch(
-//     `${baseApiUrl}/stock/symbol?exchange=US&token=${apiKey}`,
-//     configObj
-//   );
-//   const resJson = await response.json();
-//   resJson.splice(10);
-//   const symbolsArr = resJson.map((resInfo: companyWithId) => resInfo.symbol);
-
-//   return symbolsArr;
-// });
-
-// export const fetchCompanyProfiles = createAsyncThunk(
-//   "cards/fetchCompanyProfiles",
-//   async (symbols: string[]) => {
-//     const companyProfiles = await Promise.all(
-//       symbols.map(async (symbol: string) => {
-//         const resProfile = await fetch(
-//           `${baseApiUrl}/stock/profile2?symbol=${symbol}&token=${apiKey}`,
-//           configObj
-//         );
-//         const resProfileJson = await resProfile.json();
-//         return resProfileJson;
-//       })
-//     );
-//     return companyProfiles;
-//   }
-// );
+// const apiKey = "RpN5ZqpEnkRKM9zD0NCflTb06R0lZfFV";
+const proxyURL = "https://cors-anywhere.herokuapp.com/";
+const baseUrl = "https://query2.finance.yahoo.com";
 
 export const fetchCompanies = createAsyncThunk(
   "cards/fetchCompanies",
   async () => {
     const response = await fetch(
-      `${baseUrl}/v3/reference/tickers?order=asc&limit=10&apiKey=${apiKey}`
+      `${proxyURL}${baseUrl}/v6/finance/quote?symbols=AAPL,TSLA,AMZN,META,GOOG,NFLX,GME,SNDL,BB`
     );
     const resJson = await response.json();
-    const { results: companiesArr } = resJson;
+    const { quoteResponse } = resJson;
+    const { result: companiesArr } = quoteResponse;
     const companiesWithImgsArr = companiesArr.map(
-      (company: any, index: any) => ({ ...company, img: companyImages[index] })
+      (company: any, index: any) => ({
+        ...company,
+        img: companyImages[index].logo,
+      })
     );
     return companiesWithImgsArr;
+  }
+);
+
+export const fetchCompanyInfo = createAsyncThunk(
+  "cards/fetchCompanyInfo",
+  async (symbol: any) => {
+    const specialInfo = await fetch(
+      `${proxyURL}${baseUrl}/v11/finance/quoteSummary/${symbol}?modules=assetProfile`
+    );
+    const specialInfoJson = await specialInfo.json();
+    const { quoteSummary } = specialInfoJson;
+    const { result } = quoteSummary;
+    const { assetProfile: companySpecialInfo } = result[0];
+
+    const info = await fetch(
+      `${proxyURL}${baseUrl}/v6/finance/quote?symbols=${symbol}`
+    );
+    const infoJson = await info.json();
+    const { quoteResponse } = infoJson;
+    const { result: companyInfo } = quoteResponse;
+
+    const imgData: any = companyImages.find(
+      (obj: any) => Object.values(obj)[0] === symbol
+    );
+    console.log(imgData);
+    const image: any = imgData.logo;
+
+    const fullInfo = { ...companySpecialInfo, ...companyInfo[0], img: image };
+    return fullInfo;
   }
 );
 
@@ -102,6 +139,13 @@ const cardsSlice = createSlice({
         state.status = "idle";
       })
       .addCase(fetchCompanies.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(fetchCompanyInfo.fulfilled, (state, action) => {
+        state.currentCompanyInfo = action.payload;
+        state.status = "idle";
+      })
+      .addCase(fetchCompanyInfo.pending, (state, action) => {
         state.status = "loading";
       });
   },

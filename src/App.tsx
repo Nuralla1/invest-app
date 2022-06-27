@@ -20,7 +20,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/:companyNumber" element={<Profile />} />
+          <Route path="/:companySymbol" element={<Profile />} />
         </Routes>
         <Footer />
       </ThemeProvider>
