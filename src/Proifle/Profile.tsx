@@ -8,29 +8,66 @@ import store from "../store";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Box, Container } from "@mui/material";
 import Typography from "@mui/material/Typography";
+import Chart from "react-apexcharts";
+
+const chart: any = {
+  options: {
+    chart: {
+      type: "candlestick",
+      height: 350,
+    },
+    title: {
+      text: "CandleStick Chart",
+      align: "left",
+    },
+    xaxis: {
+      type: "datetime",
+    },
+    yaxis: {
+      tooltip: {
+        enabled: true,
+      },
+    },
+  },
+};
 
 const Profile = () => {
   const { companySymbol } = useParams();
+  const [series, setSeries] = useState([{ data: [] }]);
 
   const companyInfo = useSelector(
     (state: any) => state.cards.currentCompanyInfo,
     shallowEqual
   );
-  console.log(companyInfo);
+
   const loadingStatus = useSelector((state: any) => state.cards.status);
-  const companiesArr = useSelector(
-    (state: any) => state.cards.entities,
-    shallowEqual
-  );
-  //   const generalCompanyInfo = companiesArr.find(
-  //     (company: any) => companySymbol === company.symbol
-  //   );
+
+  const { prices } = companyInfo;
+  const pricesFormatted = prices.map((obj: any) => ({
+    x: new Date(obj.x),
+    y: obj.y,
+  }));
 
   useEffect(() => {
-    setTimeout(() => store.dispatch(fetchCompanyInfo(companySymbol)), 0);
+    store.dispatch(fetchCompanyInfo(companySymbol));
+    setSeries([{ data: pricesFormatted }]);
   }, []);
+
   if (loadingStatus === "loading") {
-    return <LinearProgress />;
+    return (
+      <>
+        <Box
+          sx={{
+            pt: 20,
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <LinearProgress />
+        </Box>
+      </>
+    );
   }
 
   return (
@@ -52,6 +89,12 @@ const Profile = () => {
             {companyInfo.longBusinessSummary}
           </Typography>
           <Typography variant="overline">{companyInfo.website}</Typography>
+          <Chart
+            options={chart.options}
+            series={series}
+            type="candlestick"
+            width="100%"
+          />
         </Box>
       </Container>
     </>

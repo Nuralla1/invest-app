@@ -14,7 +14,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import LinearProgress from "@mui/material/LinearProgress";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Cards = () => {
   const dispatch = useDispatch();
@@ -24,11 +24,11 @@ const Cards = () => {
     (state: any) => state.cards.entities,
     shallowEqual
   );
-  console.log(companiesArr);
+
   const loadingStatus = useSelector((state: any) => state.cards.status);
 
   useEffect(() => {
-    setTimeout(() => store.dispatch(fetchCompanies()), 0);
+    store.dispatch(fetchCompanies());
   }, []);
   if (loadingStatus === "loading") {
     return <LinearProgress />;

@@ -78,7 +78,7 @@ export type companyWithId = {
 
 // const apiKey = "RpN5ZqpEnkRKM9zD0NCflTb06R0lZfFV";
 const proxyURL = "https://cors-anywhere.herokuapp.com/";
-const baseUrl = "https://query2.finance.yahoo.com";
+const baseUrl = "https://query1.finance.yahoo.com";
 
 export const fetchCompanies = createAsyncThunk(
   "cards/fetchCompanies",
@@ -99,6 +99,10 @@ export const fetchCompanies = createAsyncThunk(
   }
 );
 
+const round = (number: any) => {
+  return number ? +number.toFixed(2) : null;
+};
+
 export const fetchCompanyInfo = createAsyncThunk(
   "cards/fetchCompanyInfo",
   async (symbol: any) => {
@@ -116,14 +120,43 @@ export const fetchCompanyInfo = createAsyncThunk(
     const infoJson = await info.json();
     const { quoteResponse } = infoJson;
     const { result: companyInfo } = quoteResponse;
-
     const imgData: any = companyImages.find(
       (obj: any) => Object.values(obj)[0] === symbol
     );
-    console.log(imgData);
     const image: any = imgData.logo;
 
-    const fullInfo = { ...companySpecialInfo, ...companyInfo[0], img: image };
+    const chartInfo = await fetch(
+      `${proxyURL}${baseUrl}/v8/finance/chart/${symbol}?range=1mo&interval=1d`
+    );
+    const chartInfoJson = await chartInfo.json();
+    const { chart } = chartInfoJson;
+    const { result: chartData } = chart;
+    const { timestamp } = chartData[0];
+    const { indicators } = chartData[0];
+    const { quote } = indicators;
+
+    const candleStickData = timestamp.map((ts: any, index: any) => ({
+      x: ts,
+      y: [
+        quote[0].open[index],
+        quote[0].high[index],
+        quote[0].low[index],
+        quote[0].close[index],
+      ].map(round),
+    }));
+
+    // series: [{
+    //   data: [{
+    //     x: new Date(2016, 01, 01),
+    //     y: [51.98, 56.29, 51.59, 53.85]
+    //   }
+
+    const fullInfo = {
+      ...companySpecialInfo,
+      ...companyInfo[0],
+      img: image,
+      prices: candleStickData,
+    };
     return fullInfo;
   }
 );
