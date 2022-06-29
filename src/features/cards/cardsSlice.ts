@@ -58,6 +58,7 @@ const symbolsYahoo = [
 type initState = {
   entities?: any;
   currentCompanyInfo: any;
+  chartInfo: any;
   status: string;
   symbols: string[];
 };
@@ -67,6 +68,7 @@ const initialState: initState = {
   symbols: [],
   entities: [],
   currentCompanyInfo: {},
+  chartInfo: {},
 };
 
 export type companyWithId = {
@@ -105,9 +107,9 @@ const round = (number: any) => {
 
 export const fetchCompanyInfo = createAsyncThunk(
   "cards/fetchCompanyInfo",
-  async (symbol: any) => {
+  async (companySymbol: any) => {
     const specialInfo = await fetch(
-      `${proxyURL}${baseUrl}/v11/finance/quoteSummary/${symbol}?modules=assetProfile`
+      `${proxyURL}${baseUrl}/v11/finance/quoteSummary/${companySymbol}?modules=assetProfile`
     );
     const specialInfoJson = await specialInfo.json();
     const { quoteSummary } = specialInfoJson;
@@ -115,35 +117,15 @@ export const fetchCompanyInfo = createAsyncThunk(
     const { assetProfile: companySpecialInfo } = result[0];
 
     const info = await fetch(
-      `${proxyURL}${baseUrl}/v6/finance/quote?symbols=${symbol}`
+      `${proxyURL}${baseUrl}/v6/finance/quote?symbols=${companySymbol}`
     );
     const infoJson = await info.json();
     const { quoteResponse } = infoJson;
     const { result: companyInfo } = quoteResponse;
     const imgData: any = companyImages.find(
-      (obj: any) => Object.values(obj)[0] === symbol
+      (obj: any) => Object.values(obj)[0] === companySymbol
     );
     const image: any = imgData.logo;
-
-    const chartInfo = await fetch(
-      `${proxyURL}${baseUrl}/v8/finance/chart/${symbol}?range=1mo&interval=1d`
-    );
-    const chartInfoJson = await chartInfo.json();
-    const { chart } = chartInfoJson;
-    const { result: chartData } = chart;
-    const { timestamp } = chartData[0];
-    const { indicators } = chartData[0];
-    const { quote } = indicators;
-
-    const candleStickData = timestamp.map((ts: any, index: any) => ({
-      x: ts,
-      y: [
-        quote[0].open[index],
-        quote[0].high[index],
-        quote[0].low[index],
-        quote[0].close[index],
-      ].map(round),
-    }));
 
     // series: [{
     //   data: [{
@@ -155,9 +137,35 @@ export const fetchCompanyInfo = createAsyncThunk(
       ...companySpecialInfo,
       ...companyInfo[0],
       img: image,
-      prices: candleStickData,
     };
     return fullInfo;
+  }
+);
+
+export const fetchChartInfo = createAsyncThunk(
+  "cards/fetchChartInfo",
+  async (requestData: any) => {
+    const { companySymbol, period } = requestData;
+    const chartInfo = await fetch(
+      `${proxyURL}${baseUrl}/v8/finance/chart/${companySymbol}?range=${period}&interval=1d`
+    );
+    const chartInfoJson = await chartInfo.json();
+    const { chart } = chartInfoJson;
+    const { result: chartData } = chart;
+    const { timestamp } = chartData[0];
+    const { indicators } = chartData[0];
+    const { quote } = indicators;
+
+    const candleStickData = timestamp.map((ts: any, index: any) => ({
+      x: new Date(ts * 1000),
+      y: [
+        quote[0].open[index],
+        quote[0].high[index],
+        quote[0].low[index],
+        quote[0].close[index],
+      ].map(round),
+    }));
+    return { prices: candleStickData };
   }
 );
 
@@ -179,6 +187,13 @@ const cardsSlice = createSlice({
         state.status = "idle";
       })
       .addCase(fetchCompanyInfo.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(fetchChartInfo.fulfilled, (state, action) => {
+        state.chartInfo = action.payload;
+        state.status = "idle";
+      })
+      .addCase(fetchChartInfo.pending, (state, action) => {
         state.status = "loading";
       });
   },
