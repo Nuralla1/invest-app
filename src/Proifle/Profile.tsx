@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect, useCallback } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchCompanyInfo, fetchChartInfo } from "../features/cards/cardsSlice";
 import store from "../store";
@@ -57,7 +57,7 @@ const Profile = () => {
   const requestData = { companySymbol, period };
   useEffect(() => {
     store.dispatch(fetchCompanyInfo(companySymbol));
-  }, []);
+  }, [companySymbol]);
 
   useEffect(() => {
     store.dispatch(fetchChartInfo(requestData));
@@ -91,7 +91,7 @@ const Profile = () => {
             {companyInfo.longName}
           </Typography>
           <img
-            alt={`${companyInfo.longName} IMAGE`}
+            alt={`${companyInfo.longName}`}
             src={companyInfo.img}
             width="200px"
           />

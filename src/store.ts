@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import cardsSliceReducer from "./features/cards/cardsSlice";
 
 const store = configureStore({

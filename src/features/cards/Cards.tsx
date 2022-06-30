@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { shallowEqual, useSelector } from "react-redux";
 import store from "../../store";
 
 import { useEffect } from "react";
@@ -7,7 +7,7 @@ import { fetchCompanies } from "./cardsSlice";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./SearchBar/SearchBar";
 
-import { Box, Card } from "@mui/material";
+import { Card } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import CardActions from "@mui/material/CardActions";
@@ -19,7 +19,6 @@ import LinearProgress from "@mui/material/LinearProgress";
 import AppBar from "@mui/material/AppBar";
 
 const Cards = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const companiesArr = useSelector(
