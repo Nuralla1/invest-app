@@ -36,6 +36,7 @@ const chart: any = {
 const Profile = () => {
   const { companySymbol } = useParams();
   const [period, setPeriod] = useState("5d");
+  const [interval, setInterval] = useState("1d");
 
   const companyInfo = useSelector(
     (state: any) => state.cards.currentCompanyInfo,
@@ -48,19 +49,17 @@ const Profile = () => {
 
   const loadingStatus = useSelector((state: any) => state.cards.status);
 
-  console.log(chartInfo);
-
-  const changePeriodHandler = useCallback((range: any) => {
+  const changePeriodHandler = useCallback((range: string, interval: string) => {
     setPeriod(range);
+    setInterval(interval);
   }, []);
 
-  const requestData = { companySymbol, period };
   useEffect(() => {
     store.dispatch(fetchCompanyInfo(companySymbol));
   }, [companySymbol]);
 
   useEffect(() => {
-    store.dispatch(fetchChartInfo(requestData));
+    store.dispatch(fetchChartInfo({ companySymbol, period, interval }));
   }, [period]);
 
   if (loadingStatus === "loading") {
@@ -120,11 +119,18 @@ const Profile = () => {
             width="100%"
           />
           <Stack direction="row" spacing={2}>
-            <Button onClick={() => changePeriodHandler("5d")}>5d</Button>
-            <Button onClick={() => changePeriodHandler("1mo")}>1mo</Button>
-            <Button onClick={() => changePeriodHandler("6mo")}>6mo</Button>
-            <Button onClick={() => changePeriodHandler("1y")}>1y</Button>
-            <Button onClick={() => changePeriodHandler("10y")}>10y</Button>
+            <Button onClick={() => changePeriodHandler("1d", "15m")}>1d</Button>
+            <Button onClick={() => changePeriodHandler("5d", "1d")}>5d</Button>
+            <Button onClick={() => changePeriodHandler("1mo", "1d")}>
+              1mo
+            </Button>
+            <Button onClick={() => changePeriodHandler("6mo", "1wk")}>
+              6mo
+            </Button>
+            <Button onClick={() => changePeriodHandler("1y", "1mo")}>1y</Button>
+            <Button onClick={() => changePeriodHandler("10y", "1mo")}>
+              10y
+            </Button>
           </Stack>
         </Box>
       </Container>
