@@ -7,7 +7,7 @@ import {
 const companyImages = [
   {
     ticker: "AAPL",
-    logo: "https://s3-symbol-logo.tradingview.com/apple--600.png",
+    logo: "https://prostomac.com/wp-content/uploads/2020/01/Apple-logo-0.jpg",
   },
   {
     ticker: "TSLA",
@@ -31,28 +31,16 @@ const companyImages = [
   },
   {
     ticker: "GME",
-    logo: "https://ih1.redbubble.net/image.2128328118.9499/st,small,507x507-pad,600x600,f8f8f8.jpg",
+    logo: "https://www.zonetraderpro.com/wp-content/uploads/2021/02/1eadfde291469bf37b2f53b2fe0b2261.png",
   },
   {
     ticker: "SNDL",
-    logo: "https://www.pngitem.com/pimgs/m/459-4598262_sundial-growers-logo-hd-png-download.png",
+    logo: "https://pbs.twimg.com/profile_images/1080594850683138049/J5U-SAmd_400x400.jpg",
   },
   {
     ticker: "BB",
     logo: "https://yablyk.com/wp-content/uploads/2013/02/blackberry-logo.jpg",
   },
-];
-
-const symbolsYahoo = [
-  "AAPL",
-  "TSLA",
-  "AMZN",
-  "META",
-  "GOOG",
-  "NFLX",
-  "GME",
-  "SNDL",
-  "BB",
 ];
 
 type initState = {

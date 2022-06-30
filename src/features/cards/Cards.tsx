@@ -4,8 +4,10 @@ import store from "../../store";
 
 import { useEffect } from "react";
 import { fetchCompanies } from "./cardsSlice";
+import { useNavigate } from "react-router-dom";
+import SearchBar from "./SearchBar/SearchBar";
 
-import { Card } from "@mui/material";
+import { Box, Card } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import CardActions from "@mui/material/CardActions";
@@ -14,7 +16,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import LinearProgress from "@mui/material/LinearProgress";
-import { useNavigate } from "react-router-dom";
+import AppBar from "@mui/material/AppBar";
 
 const Cards = () => {
   const dispatch = useDispatch();
@@ -42,6 +44,9 @@ const Cards = () => {
         }}
         maxWidth="md"
       >
+        <AppBar position="relative">
+          <SearchBar />
+        </AppBar>
         <Grid container spacing={4}>
           {companiesArr.map((company: any) => (
             <Grid item key={company.symbol} xs={12} sm={6} md={4}>
@@ -67,7 +72,7 @@ const Cards = () => {
                     {company.shortName}
                   </Typography>
                   <Typography>
-                    Price: {`${company.postMarketPrice}`} USD
+                    Price: {`${company.regularMarketPrice}`} USD
                   </Typography>
                 </CardContent>
                 <CardActions>
