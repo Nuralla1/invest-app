@@ -1,9 +1,9 @@
 import React from "react";
 import { useState, useEffect, useCallback } from "react";
-import { shallowEqual, useSelector } from "react-redux";
+import { shallowEqual } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../hooks/hooks";
 import { useParams } from "react-router-dom";
 import { fetchCompanyInfo, fetchChartInfo } from "../features/cards/cardsSlice";
-import store from "../store";
 
 import LinearProgress from "@mui/material/LinearProgress";
 import { Box, Container } from "@mui/material";
@@ -12,7 +12,9 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Chart from "react-apexcharts";
 
-const chart: any = {
+import { ChartConfig } from "../types/types";
+
+const chart: ChartConfig = {
   options: {
     chart: {
       type: "candlestick",
@@ -34,20 +36,21 @@ const chart: any = {
 };
 
 const Profile = () => {
+  const dispatch = useAppDispatch();
   const { companySymbol } = useParams();
   const [period, setPeriod] = useState("5d");
   const [interval, setInterval] = useState("1d");
 
-  const companyInfo = useSelector(
-    (state: any) => state.cards.currentCompanyInfo,
+  const companyInfo = useAppSelector(
+    (state) => state.cards.currentCompanyInfo,
     shallowEqual
   );
-  const chartInfo = useSelector(
-    (state: any) => state.cards.chartInfo,
+  const chartInfo = useAppSelector(
+    (state) => state.cards.chartInfo,
     shallowEqual
   );
 
-  const loadingStatus = useSelector((state: any) => state.cards.status);
+  const loadingStatus = useAppSelector((state) => state.cards.status);
 
   const changePeriodHandler = useCallback((range: string, interval: string) => {
     setPeriod(range);
@@ -55,11 +58,11 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    store.dispatch(fetchCompanyInfo(companySymbol));
+    dispatch(fetchCompanyInfo(companySymbol));
   }, [companySymbol]);
 
   useEffect(() => {
-    store.dispatch(fetchChartInfo({ companySymbol, period, interval }));
+    dispatch(fetchChartInfo({ companySymbol, period, interval }));
   }, [period]);
 
   if (loadingStatus === "loading") {
@@ -101,19 +104,7 @@ const Profile = () => {
           <Chart
             options={chart.options}
             series={
-              chartInfo.prices !== "undefined"
-                ? [{ data: chartInfo.prices }]
-                : [
-                    {
-                      data: [
-                        { x: 1654003800, y: [0.99, 1, 0.95, 0.94] },
-                        { x: 1654003800, y: [0.98, 1.5, 0.96, 0.99] },
-                        { x: 1654003800, y: [0.97, 1.4, 0.97, 0.98] },
-                        { x: 1654003800, y: [0.96, 1.3, 0.98, 0.97] },
-                        { x: 1654003800, y: [0.95, 1.2, 0.99, 0.96] },
-                      ],
-                    },
-                  ]
+              chartInfo.prices ? [{ data: chartInfo.prices }] : [{ data: [] }]
             }
             type="candlestick"
             width="100%"

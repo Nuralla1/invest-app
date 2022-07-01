@@ -1,7 +1,5 @@
 import React from "react";
-import { shallowEqual, useSelector } from "react-redux";
-import store from "../../store";
-
+import { shallowEqual } from "react-redux";
 import { useEffect } from "react";
 import { fetchCompanies } from "./cardsSlice";
 import { useNavigate } from "react-router-dom";
@@ -18,18 +16,24 @@ import Button from "@mui/material/Button";
 import LinearProgress from "@mui/material/LinearProgress";
 import AppBar from "@mui/material/AppBar";
 
+import { CompanyWithImg, StoreState } from "../../types/types";
+import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
+
 const Cards = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const companiesArr = useSelector(
-    (state: any) => state.cards.entities,
+  const companiesArr = useAppSelector(
+    (state: StoreState) => state.cards.entities,
     shallowEqual
   );
 
-  const loadingStatus = useSelector((state: any) => state.cards.status);
+  const loadingStatus = useAppSelector(
+    (state: StoreState) => state.cards.status
+  );
 
   useEffect(() => {
-    store.dispatch(fetchCompanies());
+    dispatch(fetchCompanies());
   }, []);
   if (loadingStatus === "loading") {
     return <LinearProgress />;
@@ -47,7 +51,7 @@ const Cards = () => {
           <SearchBar />
         </AppBar>
         <Grid container spacing={4}>
-          {companiesArr.map((company: any) => (
+          {companiesArr.map((company: CompanyWithImg) => (
             <Grid item key={company.symbol} xs={12} sm={6} md={4}>
               <Card
                 sx={{

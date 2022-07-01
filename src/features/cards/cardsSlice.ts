@@ -1,4 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  ImgData,
+  CardsSliceInitState,
+  Company,
+  ChartRequestParams,
+  ChartFinalInfo,
+  SingleCandleInfo,
+} from "../../types/types";
 
 const companyImages = [
   {
@@ -39,30 +47,14 @@ const companyImages = [
   },
 ];
 
-type initState = {
-  entities?: any;
-  currentCompanyInfo: any;
-  chartInfo: any;
-  status: string;
-  symbols: string[];
-};
-
-const initialState: initState = {
+const initialState: CardsSliceInitState = {
   status: "idle",
-  symbols: [],
+
   entities: [],
   currentCompanyInfo: {},
   chartInfo: {},
 };
 
-export type companyWithId = {
-  [key: string]: string | number;
-  id: number;
-  marketCapitalization: number;
-  shareOutstanding: number;
-};
-
-// const apiKey = "RpN5ZqpEnkRKM9zD0NCflTb06R0lZfFV";
 const proxyURL = "https://cors-anywhere.herokuapp.com/";
 const baseUrl = "https://query1.finance.yahoo.com";
 
@@ -75,8 +67,8 @@ export const fetchCompanies = createAsyncThunk(
     const resJson = await response.json();
     const { quoteResponse } = resJson;
     const { result: companiesArr } = quoteResponse;
-    const companiesWithImgsArr = companiesArr.map(
-      (company: any, index: any) => ({
+    const companiesWithImgsArr: Company = companiesArr.map(
+      (company: Company, index: number) => ({
         ...company,
         img: companyImages[index].logo,
       })
@@ -85,13 +77,13 @@ export const fetchCompanies = createAsyncThunk(
   }
 );
 
-const round = (number: any) => {
+const round = (number: number) => {
   return number ? +number.toFixed(2) : null;
 };
 
 export const fetchCompanyInfo = createAsyncThunk(
   "cards/fetchCompanyInfo",
-  async (companySymbol: any) => {
+  async (companySymbol: string | undefined) => {
     const specialInfo = await fetch(
       `${proxyURL}${baseUrl}/v11/finance/quoteSummary/${companySymbol}?modules=assetProfile`
     );
@@ -106,18 +98,12 @@ export const fetchCompanyInfo = createAsyncThunk(
     const infoJson = await info.json();
     const { quoteResponse } = infoJson;
     const { result: companyInfo } = quoteResponse;
-    const imgData: any = companyImages.find(
-      (obj: any) => Object.values(obj)[0] === companySymbol
+    const imgData: ImgData | undefined = companyImages.find(
+      (obj: ImgData) => Object.values(obj)[0] === companySymbol
     );
-    const image: any = imgData.logo;
+    const image: string = imgData!.logo;
 
-    // series: [{
-    //   data: [{
-    //     x: new Date(2016, 01, 01),
-    //     y: [51.98, 56.29, 51.59, 53.85]
-    //   }
-
-    const fullInfo = {
+    const fullInfo: Company = {
       ...companySpecialInfo,
       ...companyInfo[0],
       img: image,
@@ -128,8 +114,9 @@ export const fetchCompanyInfo = createAsyncThunk(
 
 export const fetchChartInfo = createAsyncThunk(
   "cards/fetchChartInfo",
-  async (requestData: any) => {
-    const { companySymbol, period, interval } = requestData;
+  async (requestParams: ChartRequestParams) => {
+    console.log(requestParams);
+    const { companySymbol, period, interval } = requestParams;
     const chartInfo = await fetch(
       `${proxyURL}${baseUrl}/v8/finance/chart/${companySymbol}?range=${period}&interval=${interval}`
     );
@@ -140,7 +127,7 @@ export const fetchChartInfo = createAsyncThunk(
     const { indicators } = chartData[0];
     const { quote } = indicators;
 
-    const candleStickData = timestamp.map((ts: any, index: any) => ({
+    const candleStickData = timestamp.map((ts: number, index: number) => ({
       x: new Date(ts * 1000),
       y: [
         quote[0].open[index],
@@ -149,7 +136,8 @@ export const fetchChartInfo = createAsyncThunk(
         quote[0].close[index],
       ].map(round),
     }));
-    return { prices: candleStickData };
+    const finalResult: ChartFinalInfo = { prices: candleStickData };
+    return finalResult;
   }
 );
 

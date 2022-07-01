@@ -28,7 +28,7 @@ const Header = () => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            GOLDMAN SACHS.KZ VIP ORIGINAL INC.
+            GOLDMAN SACHS.KZ VIP ORIGINAL KFC INC.
           </Typography>
 
           <Button variant="contained">Sign in / Sign up</Button>
