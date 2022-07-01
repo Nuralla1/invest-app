@@ -1,9 +1,12 @@
 import React from "react";
 import { useState, useEffect, useCallback } from "react";
 import { shallowEqual } from "react-redux";
-import { useAppSelector, useAppDispatch } from "../hooks/hooks";
+import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
 import { useParams } from "react-router-dom";
-import { fetchCompanyInfo, fetchChartInfo } from "../features/cards/cardsSlice";
+import {
+  fetchCompanyInfo,
+  fetchChartInfo,
+} from "../../features/cards/cardsSlice";
 
 import LinearProgress from "@mui/material/LinearProgress";
 import { Box, Container } from "@mui/material";
@@ -12,7 +15,7 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Chart from "react-apexcharts";
 
-import { ChartConfig } from "../types/types";
+import { ChartConfig } from "../../types/types";
 
 const chart: ChartConfig = {
   options: {

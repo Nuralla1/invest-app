@@ -115,7 +115,6 @@ export const fetchCompanyInfo = createAsyncThunk(
 export const fetchChartInfo = createAsyncThunk(
   "cards/fetchChartInfo",
   async (requestParams: ChartRequestParams) => {
-    console.log(requestParams);
     const { companySymbol, period, interval } = requestParams;
     const chartInfo = await fetch(
       `${proxyURL}${baseUrl}/v8/finance/chart/${companySymbol}?range=${period}&interval=${interval}`

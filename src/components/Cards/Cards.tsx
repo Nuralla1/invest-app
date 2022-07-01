@@ -1,7 +1,7 @@
 import React from "react";
 import { shallowEqual } from "react-redux";
 import { useEffect } from "react";
-import { fetchCompanies } from "./cardsSlice";
+import { fetchCompanies } from "../../features/cards/cardsSlice";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./SearchBar/SearchBar";
 

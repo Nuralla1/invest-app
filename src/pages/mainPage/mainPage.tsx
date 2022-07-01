@@ -1,5 +1,5 @@
-import Cards from "../cards/Cards";
-import MainDescription from "../MainDescription/MainDescription";
+import Cards from "../../components/Cards/Cards";
+import MainDescription from "../../components/MainDescription/MainDescription";
 import { Box } from "@mui/material";
 
 const MainPage = () => {

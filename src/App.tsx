@@ -5,10 +5,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Routes, Route } from "react-router-dom";
 
-import Header from "./features/header/Header";
-import Footer from "./features/footer/Footer";
-import MainPage from "./features/mainPage/mainPage";
-import Profile from "./Proifle/Profile";
+import Header from "./components/header/Header";
+import Footer from "./components/footer/Footer";
+import MainPage from "./pages/mainPage/mainPage";
+import Profile from "./components/Proifle/Profile";
 
 const theme = createTheme();
 
