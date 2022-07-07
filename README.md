@@ -1,4 +1,4 @@
-# Invest App
+# Sunrise Invest App
 
 ## Description
 
@@ -18,7 +18,8 @@ Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 If you want to check the app without launching anything, go to the following link :
-[https://brilliant-sprinkles-833e78.netlify.app](https://brilliant-sprinkles-833e78.netlify.app)
+[https://brilliant-sprinkles-833e78.netlify.app](https://brilliant-sprinkles-833e78.netlify.app).  
+If website is not getting response from the API, make sure to go to [https://cors-anywhere.herokuapp.com/](https://cors-anywhere.herokuapp.com/) and press button, then reopen app again. That is NodeJS proxy which adds CORS headers to the proxied request.
 
 ## Functionality
 
