@@ -10,28 +10,55 @@ const Header = () => {
   const navigate = useNavigate();
   return (
     <Box>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-            onClick={() => navigate("/")}
-          >
-            Home
-          </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-          >
-            GOLDMAN SACHS.KZ VIP ORIGINAL KFC INC.
-          </Typography>
+      <AppBar
+        position="static"
+        sx={{ p: 2, background: "linear-gradient(174deg, #03071e, #dc0202)" }}
+      >
+        <Toolbar
+          sx={{
+            disaply: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+          }}
+        >
+          <Box sx={{}}>
+            <img
+              alt="Jusan logo"
+              width="50px"
+              src="https://www.jusaninvest.kz/assets/img/index/trading.svg"
+            />
 
-          <Button variant="contained">Sign in / Sign up</Button>
+            <Button
+              color="inherit"
+              variant="outlined"
+              size="large"
+              sx={{ mx: 2, float: "right" }}
+              onClick={() => navigate("/")}
+            >
+              Home
+            </Button>
+          </Box>
+
+          <Box>
+            <Button
+              color="inherit"
+              variant="outlined"
+              size="large"
+              sx={{ mx: 1 }}
+              onClick={() => navigate("/")}
+            >
+              Sign in
+            </Button>
+            <Button
+              color="inherit"
+              variant="outlined"
+              size="large"
+              sx={{ mx: 1 }}
+              onClick={() => navigate("/")}
+            >
+              Sign up
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>

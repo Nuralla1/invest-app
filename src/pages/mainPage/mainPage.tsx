@@ -6,7 +6,12 @@ const MainPage = () => {
   return (
     <>
       <Box
-        sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          background: "linear-gradient(45deg, #03071e, #dc0202)",
+        }}
       >
         <MainDescription />
         <Cards />

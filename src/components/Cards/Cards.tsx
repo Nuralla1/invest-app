@@ -5,7 +5,7 @@ import { fetchCompanies } from "../../features/cards/cardsSlice";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./SearchBar/SearchBar";
 
-import { Card } from "@mui/material";
+import { Card, Paper } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import CardActions from "@mui/material/CardActions";
@@ -47,7 +47,7 @@ const Cards = () => {
         }}
         maxWidth="md"
       >
-        <AppBar position="relative">
+        <AppBar position="relative" sx={{ mb: 3 }}>
           <SearchBar />
         </AppBar>
         <Grid container spacing={4}>
@@ -58,6 +58,10 @@ const Cards = () => {
                   height: "100%",
                   display: "flex",
                   flexDirection: "column",
+                  bgcolor: "#ef0b0054",
+                  color: "white",
+                  borderRadius: 6,
+                  boxShadow: "0.5px 0.5px 25px 2px  white",
                 }}
               >
                 <CardContent sx={{ flexGrow: 1 }}>
@@ -81,6 +85,8 @@ const Cards = () => {
                 <CardActions>
                   <Button
                     size="large"
+                    variant="text"
+                    color="inherit"
                     onClick={() => navigate(`/${company.symbol}`)}
                   >
                     See more info

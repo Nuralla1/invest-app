@@ -60,13 +60,13 @@ const Profile = () => {
     setInterval(interval);
   }, []);
 
-  useEffect(() => {
-    dispatch(fetchCompanyInfo(companySymbol));
-  }, [companySymbol]);
+  // useEffect(() => {
+  //   dispatch(fetchCompanyInfo(companySymbol));
+  // }, [companySymbol]);
 
-  useEffect(() => {
-    dispatch(fetchChartInfo({ companySymbol, period, interval }));
-  }, [period]);
+  // useEffect(() => {
+  //   dispatch(fetchChartInfo({ companySymbol, period, interval }));
+  // }, [period]);
 
   if (loadingStatus === "loading") {
     return (

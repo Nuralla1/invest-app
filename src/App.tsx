@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Box } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Routes, Route } from "react-router-dom";
 
@@ -17,12 +18,14 @@ function App() {
     <div className="App">
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Header />
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/:companySymbol" element={<Profile />} />
-        </Routes>
-        <Footer />
+        <Box>
+          <Header />
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/:companySymbol" element={<Profile />} />
+          </Routes>
+          <Footer />
+        </Box>
       </ThemeProvider>
     </div>
   );
