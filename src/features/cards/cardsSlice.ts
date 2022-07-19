@@ -14,7 +14,7 @@ const companyImages = [
   },
   {
     ticker: "TSLA",
-    logo: "https://cdn.icon-icons.com/icons2/2845/PNG/512/tesla_logo_icon_181279.png",
+    logo: "https://www.freepnglogos.com/uploads/tesla-logo-png-black-1.png",
   },
   {
     ticker: "AMZN",
@@ -30,7 +30,7 @@ const companyImages = [
   },
   {
     ticker: "NFLX",
-    logo: "https://cdn.hashnode.com/res/hashnode/image/upload/v1647410910018/spTELtuIz.jpeg",
+    logo: "https://papik.pro/uploads/posts/2022-01/thumbs/1643618578_56-papik-pro-p-netflix-logotip-57.png",
   },
   {
     ticker: "GME",
