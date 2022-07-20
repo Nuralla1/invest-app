@@ -1,9 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { shallowEqual } from "react-redux";
 import { useEffect } from "react";
 import { fetchCompanies } from "../../features/cards/cardsSlice";
 import { useNavigate } from "react-router-dom";
-import SearchBar from "./SearchBar/SearchBar";
 
 import { Card, Paper } from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -14,7 +13,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import LinearProgress from "@mui/material/LinearProgress";
-import AppBar from "@mui/material/AppBar";
+
 import Box from "@mui/material/Box";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
@@ -40,65 +39,13 @@ const Cards = () => {
   const searchHandler = (e: any) => {
     e.preventDefault();
     const searchValue = e.target[0].value;
-    const filteredCompanies = companiesArr.filter(
-      (company: CompanyWithImg) =>
-        company.shortName?.toLowerCase().includes(`${searchValue}`) ||
-        company.shortName?.includes(`${searchValue}`)
+
+    const filteredCompanies = companiesArr.filter((company: CompanyWithImg) =>
+      company.shortName?.toLowerCase().includes(searchValue.toLowerCase())
     );
     setSearchedCompanies(filteredCompanies);
     e.target[0].value = "";
   };
-
-  // const renderFilteredCompanies = () => {
-  //   {
-  //     searchedCompanies.map((company: any) => (
-
-  //         <Grid item key={company.symbol} xs={12} sm={6} md={4}>
-  //           <Card
-  //             sx={{
-  //               height: "100%",
-  //               display: "flex",
-  //               flexDirection: "column",
-  //               bgcolor: "#ef0b0054",
-  //               color: "white",
-  //               borderRadius: 6,
-  //               boxShadow: "0.5px 0.5px 25px 2px  white",
-  //             }}
-  //           >
-  //             <CardContent sx={{ flexGrow: 1 }}>
-  //               <CardMedia
-  //                 component="img"
-  //                 sx={{
-  //                   pt: "0%",
-  //                 }}
-  //                 image={company.img}
-  //                 alt={`${company.shortName} IMAGE`}
-  //               />
-  //             </CardContent>
-  //             <CardContent>
-  //               <Typography gutterBottom variant="h5" component="h2">
-  //                 {company.shortName}
-  //               </Typography>
-  //               <Typography>
-  //                 Price: {`${company.regularMarketPrice}`} USD
-  //               </Typography>
-  //             </CardContent>
-  //             <CardActions>
-  //               <Button
-  //                 size="large"
-  //                 variant="text"
-  //                 color="inherit"
-  //                 onClick={() => navigate(`/${company.symbol}`)}
-  //               >
-  //                 See more info
-  //               </Button>
-  //             </CardActions>
-  //           </Card>
-  //         </Grid>
-
-  //     ));
-  //   }
-  // };
 
   useEffect(() => {
     dispatch(fetchCompanies());
