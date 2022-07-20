@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { shallowEqual } from "react-redux";
 import { useEffect } from "react";
 import { fetchCompanies } from "../../features/cards/cardsSlice";
@@ -16,6 +16,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 
 import Box from "@mui/material/Box";
 import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 import TextField from "@mui/material/TextField";
 import { IconButton } from "@mui/material";
 
@@ -26,7 +27,7 @@ const Cards = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [searchedCompanies, setSearchedCompanies] = useState([]);
-
+  const searchRef = useRef<HTMLInputElement>(null);
   const companiesArr = useAppSelector(
     (state: StoreState) => state.cards.entities,
     shallowEqual
@@ -38,13 +39,12 @@ const Cards = () => {
 
   const searchHandler = (e: any) => {
     e.preventDefault();
-    const searchValue = e.target[0].value;
-
+    const searchValue = searchRef!.current!.value;
     const filteredCompanies = companiesArr.filter((company: CompanyWithImg) =>
       company.shortName?.toLowerCase().includes(searchValue.toLowerCase())
     );
     setSearchedCompanies(filteredCompanies);
-    e.target[0].value = "";
+    searchRef!.current!.value = "";
   };
 
   useEffect(() => {
@@ -77,6 +77,7 @@ const Cards = () => {
           }}
         >
           <TextField
+            inputRef={searchRef}
             sx={{ width: "100%" }}
             placeholder="Поиск..."
             color="error"
@@ -88,6 +89,14 @@ const Cards = () => {
           />
           <IconButton sx={{ px: 1, alignSelf: "center" }} type="submit">
             <SearchIcon htmlColor="white" />
+          </IconButton>
+          <IconButton
+            sx={{ px: 1, alignSelf: "center" }}
+            onClick={() => {
+              searchRef!.current!.value = "";
+            }}
+          >
+            <ClearIcon htmlColor="white" />
           </IconButton>
         </Box>
 

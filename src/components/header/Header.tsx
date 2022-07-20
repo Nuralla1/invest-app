@@ -1,8 +1,6 @@
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +10,7 @@ const Header = () => {
     <Box>
       <AppBar
         position="static"
-        sx={{ p: 2, background: "linear-gradient(174deg, #03071e, #dc0202)" }}
+        sx={{ p: 2, background: "linear-gradient(177deg, #03071e, #dc0202)" }}
       >
         <Toolbar
           sx={{
@@ -45,7 +43,7 @@ const Header = () => {
               variant="outlined"
               size="large"
               sx={{ mx: 1 }}
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/signIn")}
             >
               Sign in
             </Button>
@@ -54,7 +52,7 @@ const Header = () => {
               variant="outlined"
               size="large"
               sx={{ mx: 1 }}
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/signUp")}
             >
               Sign up
             </Button>

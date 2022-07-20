@@ -7,14 +7,34 @@ export interface ChartConfig {
       [key: string]: string | number;
     };
     title: {
-      [key: string]: string;
+      [key: string]:
+        | string
+        | {
+            color: string;
+            fontSize: string;
+          };
     };
     xaxis: {
       type: "datetime";
+      labels: {
+        show: boolean;
+        style: {
+          colors: string;
+          fontSize: string;
+          cssClass: string;
+        };
+      };
     };
     yaxis: {
       tooltip: {
         enabled: boolean;
+      };
+      labels: {
+        show: boolean;
+        style: {
+          colors: string;
+          fontSize: string;
+        };
       };
     };
   };

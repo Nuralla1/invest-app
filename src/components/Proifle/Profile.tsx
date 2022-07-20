@@ -9,7 +9,7 @@ import {
 } from "../../features/cards/cardsSlice";
 
 import LinearProgress from "@mui/material/LinearProgress";
-import { Box, Container } from "@mui/material";
+import { Box, Container, Link } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
@@ -26,13 +26,33 @@ const chart: ChartConfig = {
     title: {
       text: "CandleStick Chart",
       align: "left",
+      style: {
+        color: "white",
+        fontSize: "16px",
+      },
     },
+
     xaxis: {
       type: "datetime",
+      labels: {
+        show: true,
+        style: {
+          colors: "#fff",
+          fontSize: "16px",
+          cssClass: "apexcharts-xaxis-label",
+        },
+      },
     },
     yaxis: {
       tooltip: {
         enabled: true,
+      },
+      labels: {
+        show: true,
+        style: {
+          colors: "white",
+          fontSize: "16px",
+        },
       },
     },
   },
@@ -60,13 +80,13 @@ const Profile = () => {
     setInterval(interval);
   }, []);
 
-  // useEffect(() => {
-  //   dispatch(fetchCompanyInfo(companySymbol));
-  // }, [companySymbol]);
+  useEffect(() => {
+    dispatch(fetchCompanyInfo(companySymbol));
+  }, [companySymbol]);
 
-  // useEffect(() => {
-  //   dispatch(fetchChartInfo({ companySymbol, period, interval }));
-  // }, [period]);
+  useEffect(() => {
+    dispatch(fetchChartInfo({ companySymbol, period, interval }));
+  }, [period]);
 
   if (loadingStatus === "loading") {
     return (
@@ -77,6 +97,7 @@ const Profile = () => {
             minHeight: "100vh",
             display: "flex",
             flexDirection: "column",
+            background: "linear-gradient(26deg, #03071e, #dc0202)",
           }}
         >
           <LinearProgress />
@@ -88,11 +109,16 @@ const Profile = () => {
   return (
     <>
       <Container
-        maxWidth="md"
-        sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+          minWidth: "100%",
+          background: "linear-gradient(26deg, #03071e, #dc0202)",
+        }}
       >
         <Box sx={{ p: 2 }}>
-          <Typography component="h4" variant="h3">
+          <Typography component="h4" variant="h3" color="white">
             {companyInfo.longName}
           </Typography>
           <img
@@ -100,10 +126,12 @@ const Profile = () => {
             src={companyInfo.img}
             width="200px"
           />
-          <Typography variant="subtitle1">
+          <Typography variant="subtitle1" color="white" align="justify">
             {companyInfo.longBusinessSummary}
           </Typography>
-          <Typography variant="overline">{companyInfo.website}</Typography>
+          <Link variant="overline" href={companyInfo.website}>
+            {companyInfo.website}
+          </Link>
           <Chart
             options={chart.options}
             series={
@@ -111,18 +139,43 @@ const Profile = () => {
             }
             type="candlestick"
             width="100%"
+            height="600px"
           />
           <Stack direction="row" spacing={2}>
-            <Button onClick={() => changePeriodHandler("1d", "15m")}>1d</Button>
-            <Button onClick={() => changePeriodHandler("5d", "1d")}>5d</Button>
-            <Button onClick={() => changePeriodHandler("1mo", "1d")}>
+            <Button
+              sx={{ color: "white" }}
+              onClick={() => changePeriodHandler("1d", "15m")}
+            >
+              1d
+            </Button>
+            <Button
+              sx={{ color: "white" }}
+              onClick={() => changePeriodHandler("5d", "1d")}
+            >
+              5d
+            </Button>
+            <Button
+              sx={{ color: "white" }}
+              onClick={() => changePeriodHandler("1mo", "1d")}
+            >
               1mo
             </Button>
-            <Button onClick={() => changePeriodHandler("6mo", "1wk")}>
+            <Button
+              sx={{ color: "white" }}
+              onClick={() => changePeriodHandler("6mo", "1wk")}
+            >
               6mo
             </Button>
-            <Button onClick={() => changePeriodHandler("1y", "1mo")}>1y</Button>
-            <Button onClick={() => changePeriodHandler("10y", "1mo")}>
+            <Button
+              sx={{ color: "white" }}
+              onClick={() => changePeriodHandler("1y", "1mo")}
+            >
+              1y
+            </Button>
+            <Button
+              sx={{ color: "white" }}
+              onClick={() => changePeriodHandler("10y", "1mo")}
+            >
               10y
             </Button>
           </Stack>
