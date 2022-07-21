@@ -94,6 +94,7 @@ const Cards = () => {
             sx={{ px: 1, alignSelf: "center" }}
             onClick={() => {
               searchRef!.current!.value = "";
+              setSearchedCompanies([]);
             }}
           >
             <ClearIcon htmlColor="white" />
