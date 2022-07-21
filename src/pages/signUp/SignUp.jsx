@@ -68,43 +68,24 @@ export default function SignUp() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
-                  error={!!errors.firstName?.message}
-                  helperText={errors.firstName?.message}
-                  autoComplete="given-name"
-                  name="firstName"
+                  error={!!errors.username?.message}
+                  helperText={errors.username?.message}
+                  margin="normal"
                   required
                   fullWidth
-                  id="firstName"
-                  label="Имя"
+                  id="username"
+                  label="Логин"
+                  name="username"
+                  autoComplete="username"
                   autoFocus
-                  {...register("firstName", {
+                  {...register("username", {
                     required: "Поле обязательно для заполнения",
                     pattern: {
-                      value: /^[a-z]+$/i,
+                      value: /(?!^\d+$)^[-\w]{3,15}$/i,
                       message:
-                        "Имя должно быть на латинице, без цифр и спецсимволов",
-                    },
-                  })}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  error={!!errors.lastName?.message}
-                  helperText={errors.lastName?.message}
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Фамилия"
-                  name="lastName"
-                  autoComplete="family-name"
-                  {...register("lastName", {
-                    required: "Поле обязательно для заполнения",
-                    pattern: {
-                      value: /^[a-z]+$/i,
-                      message:
-                        "Фамилия должна быть на латинице, без цифр и спецсимволов",
+                        "Логин должен быть от 3 до 15 символов, только латиница. Без пробелов, без спецсимволов, кроме нижнего подчеркивания и дефиса. Может содержать числа, но не полностью состоять из них.",
                     },
                   })}
                 />
@@ -143,8 +124,10 @@ export default function SignUp() {
                   {...register("password", {
                     required: "Поле обязательно для заполнения",
                     pattern: {
-                      value: /^.{4,}$/i,
-                      message: "Пароль должен содержать от 4 любых символов.",
+                      value:
+                        /^(?=.*?[0-9])(?=.*?[!@#$%^&*)(+?=._<>\\/]).{8,30}$/i,
+                      message:
+                        "Пароль должен содержать от 8 до 30 символов и иметь хотя бы одну цифру и специсимвол.",
                     },
                   })}
                 />
